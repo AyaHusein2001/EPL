@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import { Box } from '@mui/material';
 import ReserveDialog from './reserveDialog';
+import EditMatchDialog from './editMatchDialog';
 export default function MatchCard({
   country1Name,
   country1Image,
@@ -28,6 +29,16 @@ export default function MatchCard({
   const handleClose = () => {
     setOpen(false);
   };
+
+  const [openEdit, setOpenEdit] = React.useState(false);
+    
+  const handleClickOpenEdit = () => {
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
   return (
     <Card sx={{ maxWidth: 345, padding: '15px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '-19px' }}>
@@ -39,15 +50,15 @@ export default function MatchCard({
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <h2 style={{ color: 'cornflowerblue' }}>{country1Name}</h2>
         <Avatar
-          sx={{ width: '80px', height: '50px', objectFit: 'scale-down', borderRadius: '0px' }}
+          sx={{ width: '110px', height: '130px', objectFit: 'cover', borderRadius: '0px' }}
           alt={`${country1Name} Flag`}
           src={country1Image}
         />
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h2 style={{ color: 'cornflowerblue' }}>{country2Name}</h2>
+      <Box sx={{ display: 'flex',marginTop:'20px', justifyContent: 'space-between' }}>
+        <h2 style={{ color: 'cornflowerblue',alignSelf:'flex-start' }}>{country2Name}</h2>
         <Avatar
-          sx={{ width: '80px', height: '50px', objectFit: 'cover', borderRadius: '0px' }}
+          sx={{ width: '110px', height: '130px', objectFit: 'cover', borderRadius: '0px' }}
           alt={`${country2Name} Flag`}
           src={country2Image}
         />
@@ -61,7 +72,18 @@ export default function MatchCard({
         userId={userId}
         
         />
-        {userRole==='Manager'?(<Button size="small">Edit</Button>):<></>}
+        {userRole==='Manager'?(
+          <>
+        <Button onClick={handleClickOpenEdit} size="small">Edit</Button>
+        <EditMatchDialog
+        open={openEdit}
+        handleClose={handleCloseEdit}
+        match={matchDetails}
+        
+        
+        />
+        </>
+        ):<></>}
         
       </CardActions>
     </Card>

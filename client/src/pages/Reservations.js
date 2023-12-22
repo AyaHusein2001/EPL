@@ -14,7 +14,7 @@ export default function Reservations({ userId }) {
 
   const fetchReservations = async () => {
     try {
-        console.log('khara',userId)
+        console.log('kara',userId)
       const response = await fetch(`/user/${userId}/Reservations`);
       if (!response.ok) {
         throw new Error("Failed to fetch Reservations");

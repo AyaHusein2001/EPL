@@ -6,15 +6,7 @@ import Matches from "./pages/matches";
 import ReserveDialog from "./components/reserveDialog";
 import Home from "./pages/Home";
 function App() {
-  const [backendData, setBackendData] = useState([]);
-  useEffect(() => {
-    fetch("/user")
-      .then((response) => response.json())
-      .then((data) => {
-        setBackendData(data);
-        // console.log(backendData);
-      });
-  }, []);
+
   return (
     // <MatchCard />
 
