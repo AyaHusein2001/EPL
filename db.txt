@@ -1,0 +1,313 @@
+db.matches.insertOne({
+  homeTeam: 'Germany',
+  awayTeam: 'Algeria',
+  matchVenue: 'Munech Stadium',
+  dateTime: ISODate('2023-01-01T18:00:00.000Z'),
+  mainReferee: 'John Doe',
+  linesmen: ['Jane Smith', 'Bob Johnson']
+});
+
+db.stadiums.insertOne({
+  name: 'Munech Stadium',
+  city: 'Cairo',
+  rows: 10,
+  rowSeats: 10,
+  seats: Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => Math.random() < 0.5 ? 0 : 1))
+});
+
+
+
+--------------------------------------
+
+DB
+----------------
+users
+-----
+[
+  {
+    _id: ObjectId("6582ee239c97fdae3bd31708"),
+    userName: 'aya',
+    password: 'aahahahah',
+    firstName: 'aasskkdw',
+    lastName: 'sankcn',
+    gender: 'Female',
+    city: 'aaa',
+    address: 'xsakdn',
+    email: 'aya.ahmed2001@gmail.com',
+    role: 'Fan',
+    birthDatee: {
+      years: 2022,
+      months: 3,
+      date: 8,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0
+    }
+  },
+  {
+    _id: ObjectId("6582eefa054241188bebcf34"),
+    userName: 'ayah',
+    password: 'aaaaaaaa',
+    firstName: 'xsmdcm',
+    lastName: 'sd.c,',
+    gender: 'Male',
+    city: 'x,wm.w',
+    address: 'cedcedc',
+    email: 'aya@gmail.com',
+    role: 'Fan',
+    birthDatee: {
+      years: 2022,
+      months: 3,
+      date: 8,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0
+    }
+  },
+  {
+    _id: ObjectId("6582ef556d9beb6ecb30aa23"),
+    userName: 'ayah',
+    password: 'aaaaaaaa',
+    firstName: 'xsmdcm',
+    lastName: 'sd.c,',
+    gender: 'Male',
+    city: 'x,wm.w',
+    address: 'cedcedc',
+    email: 'aya@gmail.com',
+    role: 'Fan',
+    birthDatee: {
+      years: 2022,
+      months: 3,
+      date: 8,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0
+    }
+  },
+  {
+    _id: ObjectId("6582f066fc4f7d17a7839c13"),
+    userName: 'ayah',
+    password: 'aaaaaaaa',
+    firstName: 'xsmdcm',
+    lastName: 'sd.c,',
+    gender: 'Male',
+    city: 'x,wm.w',
+    address: 'cedcedc',
+    email: 'aya@gmail.com',
+    role: 'Fan',
+    birthDatee: {
+      years: 2022,
+      months: 3,
+      date: 8,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0
+    }
+  },
+  {
+    _id: ObjectId("6582f099fc4f7d17a7839c14"),
+    userName: 'ayak',
+    password: 'aaaaaaaa',
+    firstName: 'xsmdcm',
+    lastName: 'sd.c,',
+    gender: 'Male',
+    city: 'x,wm.w',
+    address: 'cedcedc',
+    email: 'aya@gmail.com',
+    role: 'Fan',
+    birthDatee: {
+      years: 2022,
+      months: 3,
+      date: 8,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0
+    }
+  },
+  {
+    _id: ObjectId("6582f105bd072625c8e9be2a"),
+    userName: 'ayaks',
+    password: 'aaaaaaaa',
+    firstName: 'xsmdcm',
+    lastName: 'sd.c,',
+    gender: 'Male',
+    city: 'x,wm.w',
+    address: 'cedcedc',
+    email: 'aya@gmail.com',
+    role: 'Fan',
+    birthDatee: {
+      years: 2022,
+      months: 3,
+      date: 8,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0
+    }
+  },
+  {
+    _id: ObjectId("6582f131ae68d83b66b11ead"),
+    userName: 'ayakss',
+    password: 'aaaaaaaa',
+    firstName: 'xsmdcm',
+    lastName: 'sd.c,',
+    gender: 'Male',
+    city: 'x,wm.w',
+    address: 'cedcedc',
+    email: 'aya@gmail.com',
+    role: 'Fan',
+    birthDatee: {
+      years: 2022,
+      months: 3,
+      date: 8,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0
+    }
+  }
+]
+
+
+-------------
+
+matches
+----
+
+db.matches.insertMany(
+[
+  {
+    _id: ObjectId("65838b4f7fab9eeaccafffad"),
+    homeTeam: 'Germany',
+    awayTeam: 'Iraq',
+    stadiumId: ObjectId("6583a2887fab9eeaccafffb0"),
+    dateTime: ISODate("2023-01-01T18:00:00.000Z"),
+    mainReferee: 'John Doe',
+    linesmen: [ 'Jane Smith', 'Bob Johnson' ],
+    reservations: [
+    {
+      row: 1,
+      seat: 1,
+      customerId: ObjectId("6582f105bd072625c8e9be2a"),
+    },
+     {
+      row: 2,
+      seat: 5,
+      customerId: ObjectId("6582f105bd072625c8e9be2a"),
+    }
+    ]
+  },
+  {
+    _id: ObjectId("65838d7f7fab9eeaccafffae"),
+    homeTeam: 'France',
+    awayTeam: 'Iraq',
+    stadiumId: ObjectId("6583a2887fab9eeaccafffb0"),
+    dateTime: ISODate("2023-02-01T18:00:00.000Z"),
+    mainReferee: 'John Doe',
+    linesmen: [ 'Jane Smith', 'Bob Johnson' ],
+    reservations: [
+    {
+      row: 1,
+      seat: 1,
+      customerId: ObjectId("6582f105bd072625c8e9be2a"),
+    },
+     {
+      row: 2,
+      seat: 5,
+      customerId: ObjectId("6582f105bd072625c8e9be2a"),
+    }
+    ]
+  },
+  {
+    _id: ObjectId("65838d9d7fab9eeaccafffaf"),
+    homeTeam: 'Brazil',
+    awayTeam: 'Algeria',
+    stadiumId: ObjectId("6583a2887fab9eeaccafffb0"),
+    dateTime: ISODate("2024-01-01T18:00:00.000Z"),
+    mainReferee: 'John Doe',
+    linesmen: [ 'Jane Smith', 'Bob Johnson' ],
+    reservations: [
+    {
+      row: 1,
+      seat: 1,
+      customerId: ObjectId("6582f105bd072625c8e9be2a"),
+    },
+     {
+      row: 2,
+      seat: 5,
+      customerId: ObjectId("6582f105bd072625c8e9be2a"),
+    }
+    ]
+  },
+  {
+    _id: ObjectId("6583a2d67fab9eeaccafffb1"),
+    homeTeam: 'Germany',
+    awayTeam: 'Algeria',
+    stadiumId: ObjectId("6583a3eef69fb44e3f4a671c"),
+    dateTime: ISODate("2023-08-01T18:00:00.000Z"),
+    mainReferee: 'John Doe',
+    linesmen: [ 'Jane Smith', 'Bob Johnson' ],
+    reservations: [
+    {
+      row: 1,
+      seat: 1,
+      customerId: ObjectId("6582f105bd072625c8e9be2a"),
+    },
+     {
+      row: 2,
+      seat: 5,
+      customerId: ObjectId("6582f105bd072625c8e9be2a"),
+    }
+    ]
+  },
+  {
+    _id: ObjectId("6583a42cf69fb44e3f4a671d"),
+    homeTeam: 'Germany',
+    awayTeam: 'Algeria',
+    stadiumId: ObjectId("6583a3eef69fb44e3f4a671c"),
+    dateTime: ISODate("2023-07-01T18:00:00.000Z"),
+    mainReferee: 'John Doe',
+    linesmen: [ 'Jane Smith', 'Bob Johnson' ],
+    reservations: [
+    {
+      row: 1,
+      seat: 1,
+      customerId: ObjectId("6582f105bd072625c8e9be2a"),
+    },
+     {
+      row: 2,
+      seat: 5,
+      customerId: ObjectId("6582f105bd072625c8e9be2a"),
+    }
+    ]
+  }
+]);
+
+----------------
+
+stadium
+-----
+db.stadiums.insertMany(
+[
+  {
+    _id: ObjectId("6583a2887fab9eeaccafffb0"),
+    name: 'Cairo Stadium',
+    city: 'Cairo',
+    rows: 10,
+    rowSeats: 10
+  },
+  {
+    _id: ObjectId("6583a3eef69fb44e3f4a671c"),
+    name: 'Munech Stadium',
+    city: 'Munech',
+    rows: 4,
+    rowSeats: 5
+  }
+]);
+
+
