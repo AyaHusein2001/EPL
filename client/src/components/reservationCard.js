@@ -17,7 +17,24 @@ export default function ReservationCard({
   
 }) {
   
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/reservations/${reservationId}`, {
+        method: 'DELETE',
+      });
 
+      if (response.ok) {
+        // Handle successful deletion
+        console.log('Reservation deleted successfully');
+         // Trigger any necessary actions after deletion
+      } else {
+        // Handle failed deletion
+        console.error('Failed to delete reservation');
+      }
+    } catch (error) {
+      console.error('Error deleting reservation:', error);
+    }
+  };
  
   return (
     <Card sx={{ maxWidth: 345, padding: "15px" }}>
@@ -36,7 +53,7 @@ export default function ReservationCard({
         <Avatar
           sx={{
             width: "80px",
-            height: "50px",
+            height: "150px",
             objectFit: "scale-down",
             borderRadius: "0px",
           }}
@@ -46,7 +63,7 @@ export default function ReservationCard({
         <Avatar
           sx={{
             width: "80px",
-            height: "50px",
+            height: "150px",
             objectFit: "cover",
             borderRadius: "0px",
           }}
@@ -66,7 +83,7 @@ export default function ReservationCard({
         <h3 style={{ color: "cornflowerblue" }}>{time}</h3>
       </Box>
       <CardActions sx={{ justifyContent: "space-around" }}>
-        <Button size="small" >
+        <Button onClick={handleDelete} size="small" >
           Cancel Reservation
         </Button>
         

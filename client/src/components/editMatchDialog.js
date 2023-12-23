@@ -30,6 +30,10 @@ var toObject = require("dayjs/plugin/toObject");
 dayjs.extend(toObject);
 
 export default function EditMatchDialog({ open, handleClose, match }) {
+  useEffect(() => {
+    console.log('diaaaalog',matchDatee);
+    fetchStadiums();
+  }, []);
   const [teams, setTeams] = useState([
     "Al-Ahly",
     "Al-Ettehad-Al-Sakandary",
@@ -81,10 +85,7 @@ export default function EditMatchDialog({ open, handleClose, match }) {
   const [selectedStadium, setSelectedStadium] = useState("");
   const [matchPosted, setMatchPosted] = useState(false);
 
-  useEffect(() => {
-    console.log('diaaaalog',matchDatee);
-    fetchStadiums();
-  }, []);
+ 
 
   const fetchStadiums = async () => {
     try {

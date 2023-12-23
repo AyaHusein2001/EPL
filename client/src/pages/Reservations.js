@@ -31,25 +31,7 @@ export default function Reservations({ userId }) {
     }
   };
 
-//   const fetchReservationMatches = async () => {
-//     try {
-//       for (const reservation of reservations) {
-//         const matchResponse = await fetch(`/matches/${reservation.matchId}`);
-//         if (!matchResponse.ok) {
-//           throw new Error("Failed to fetch Match");
-//         }
 
-//         const matchData = await matchResponse.json();
-//         console.log(matchData);
-
-//          // Append match details to the reservation
-//       }
-
-//       // Fetch match details for each reservation and append them to the reservations
-//     } catch (error) {
-//       console.error("Error fetching match Reservations:", error.message);
-//     }
-//   };
 
   const fetchReservationMatches = async (reservationsData) => {
     try {

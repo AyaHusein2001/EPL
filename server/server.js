@@ -132,6 +132,65 @@ app.post("/user", async (req, res) => {
   }
 });
 
+
+app.post("/stadium", async (req, res) => {
+  const formData = req.body;
+  console.log('staddddd create',formData);
+
+  try {
+    // Insert the formData into the '' collection
+    const result = await db.getDb().collection("stadiums").insertOne(formData);
+
+    console.log("Insert result:", result);
+
+    if (result.acknowledged) {
+      res.status(201).json({ success: true });
+    } else {
+      console.error(
+        "Error inserting stadium: No stadium data returned from the database"
+      );
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  } catch (error) {
+    console.error("Error inserting stadium:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+// DELETE route to delete a reservation by ID
+app.delete('/reservations/:id', async (req, res) => {
+  const reservationId = req.params.id;
+
+  try {
+    // Check if the provided reservationId is a valid ObjectId
+    if (!ObjectId.isValid(reservationId)) {
+      return res.status(400).json({ error: 'Invalid reservation ID' });
+    }
+
+    // Convert reservationId to ObjectId
+    const reservationObjectId = new ObjectId(reservationId);
+
+    // Check if the reservation with the given ID exists
+    const existingReservation = await db.getDb().collection('reservations').findOne({ _id: reservationObjectId });
+    if (!existingReservation) {
+      return res.status(404).json({ error: 'Reservation not found' });
+    }
+
+    // Delete the reservation
+    const deleteResult = await db.getDb().collection('reservations').deleteOne({ _id: reservationObjectId });
+
+    if (deleteResult.acknowledged) {
+      res.json({ success: true, message: 'Reservation deleted successfully' });
+    } else {
+      res.status(500).json({ error: 'Failed to delete reservation' });
+    }
+  } catch (error) {
+    console.error('Error deleting reservation:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.post("/signup", async (req, res) => {
   const formData = req.body;
 
