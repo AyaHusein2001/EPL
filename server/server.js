@@ -108,6 +108,7 @@ app.get("/matches", async function (req, res) {
   res.json(matches);
 });
 
+
 app.post("/user", async (req, res) => {
   const formData = req.body;
   console.log(formData);
@@ -310,6 +311,56 @@ app.get("/waitinglist", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+// Delete a user from the waiting list by ID
+app.delete('/waitinglist/:id', async (req, res) => {
+  const userId = req.params.id;
+  console.log('hereeeeeeee1')
+
+
+  try {
+    const result = await db
+      .getDb()
+      .collection('waitingList')
+      .deleteOne({ _id: new ObjectId(userId) });
+
+    if (result.acknowledged) {
+      console.log('hereeeeeeee')
+      res.status(200).json({ success: true });
+    } else {
+      res.status(404).json({ error: 'User not found in the waiting list' });
+    }
+  } catch (error) {
+    console.error('Error deleting user from waiting list:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+// Delete a user from the waiting list by ID
+app.delete('/user/:id/delete', async (req, res) => {
+  const userId = req.params.id;
+  console.log('hereeeeeeee2')
+
+
+  try {
+    const result = await db
+      .getDb()
+      .collection('users')
+      .deleteOne({ _id: new ObjectId(userId) });
+
+    if (result.acknowledged) {
+      console.log('hereeeeeeee',userId)
+      res.status(200).json({ success: true });
+    } else {
+      res.status(404).json({ error: 'User not found ' });
+    }
+  } catch (error) {
+    console.error('Error deleting user :', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 // app.post('/matches/:id/reservations', async (req, res) => {
 //   const matchId = req.params.id;

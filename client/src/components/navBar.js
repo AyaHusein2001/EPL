@@ -49,14 +49,28 @@ const ResponsiveAppBar = ({ onPageChange, onLogout, isLoggedIn, userRole }) => {
         </Typography>
 
         <Box sx={{ display: "flex", flexGrow: 1 }}>
-          <Button
+          {userRole==="Admin"?(<></>):(<Button
             onClick={() => handleButtonClick("Matches")}
             sx={{ my: 2, color: "white", display: "block" }}
           >
             Matches
-          </Button>
+          </Button>)}
 
-          {isLoggedIn && (
+          {(isLoggedIn&&userRole==="Admin")?(<Button
+            onClick={() => handleButtonClick("Users")}
+            sx={{ my: 2, color: "white", display: "block" }}
+          >
+            users
+          </Button>):(<></>)}
+
+          {(isLoggedIn&&userRole==="Admin")?(<Button
+            onClick={() => handleButtonClick("WaitingUsers")}
+            sx={{ my: 2, color: "white", display: "block" }}
+          >
+            Waiting Users
+          </Button>):(<></>)}
+
+          {isLoggedIn && (userRole === "Manager" || userRole === "Fan") && (
             <>
               {/* Additional buttons for reservations and edit profile */}
               <Button
@@ -65,14 +79,16 @@ const ResponsiveAppBar = ({ onPageChange, onLogout, isLoggedIn, userRole }) => {
               >
                 Reservations
               </Button>
-              <Button
-                onClick={() => handleButtonClick("EditProfile")}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Edit Profile
-              </Button>
             </>
           )}
+
+          {!isLoggedIn?(<></>):(<Button
+            onClick={() => handleButtonClick("EditProfile")}
+            sx={{ my: 2, color: "white", display: "block" }}
+          >
+            Edit Profile
+          </Button>)}
+
 
           {isLoggedIn && userRole === "Manager" && (
             <Button

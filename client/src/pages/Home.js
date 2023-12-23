@@ -9,6 +9,9 @@ import EditProfile from './editProfile';
 // import Tota from './editee';
 import CreateMatch from './createMatch';
 import CreateStadium from './createStadium';
+import WaitingUsers from './waitingList';
+import UsersList from './usersList';
+
 const Home = () => {
   const userIdHome = localStorage.getItem('userId');
   const [currentPage, setCurrentPage] = useState('Matches');
@@ -65,6 +68,8 @@ const Home = () => {
             {currentPage === 'EditProfile' && <EditProfile userId ={userId}  />}
             {currentPage === 'CreateMatch' && <CreateMatch   />}
             {currentPage === 'CreateStadium' && <CreateStadium   />}
+            {currentPage === 'WaitingUsers' && <WaitingUsers   />}
+            {currentPage === 'Users' && <UsersList   />}
       </Box>
     </>
   );
