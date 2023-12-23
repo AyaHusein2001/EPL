@@ -40,6 +40,7 @@ export default function Matches({userId,userRole}) {
               matchDetails={match}
               userId={userId}
               userRole={userRole}
+              fetchMatches={fetchMatches}
             />
           </Grid>
         ))}

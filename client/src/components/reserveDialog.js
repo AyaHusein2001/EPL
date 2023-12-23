@@ -41,20 +41,19 @@ export default function ReserveDialog({ open, handleClose, match, userId }) {
     try {
       const response = await fetch(`/matches/${match._id}/reservations`);
       const reservationsData = await response.json();
-      
+
       setReservations(reservationsData);
-      console.log('koky',reservationsData);
+      console.log("koky", reservationsData);
     } catch (error) {
-      console.error('Error fetching match reservations:', error);
+      console.error("Error fetching match reservations:", error);
     }
   };
 
-   // Only fetch reservations when match._id changes
-
+  // Only fetch reservations when match._id changes
 
   const isSeatReserved = (row, seat) => {
     // Check if the seat is reserved in the stored reservations state
-    const ik=reservations.some(
+    const ik = reservations.some(
       (reservation) => reservation.row == row && reservation.seat == seat
     );
     console.log(ik);
@@ -82,9 +81,9 @@ export default function ReserveDialog({ open, handleClose, match, userId }) {
           body: JSON.stringify({
             row: selectedSeat.row,
             seat: selectedSeat.seat,
-            customerId:  userId ,
-            ticketId:selectedSeat.row*10+selectedSeat.seat,
-            matchId:match._id
+            customerId: userId,
+            ticketId: selectedSeat.row * 10 + selectedSeat.seat,
+            matchId: match._id,
           }),
         });
 
@@ -93,6 +92,8 @@ export default function ReserveDialog({ open, handleClose, match, userId }) {
           console.log("Reservation successful");
           // Set success message
           setSuccessMessage("Reservation successful !");
+          fetchReservations(); // update screen
+
           // You may want to update the local match data or fetch the updated match data here
           // handleClose(); // Close the dialog after successful reservation
         } else {
@@ -213,7 +214,7 @@ export default function ReserveDialog({ open, handleClose, match, userId }) {
                   <InputLabel htmlFor="pin-number">Pin Number</InputLabel>
                   <Input
                     id="pin-number"
-                    type="text"
+                    type="password"
                     value={pinNumber}
                     onChange={(e) => setPinNumber(e.target.value)}
                   />

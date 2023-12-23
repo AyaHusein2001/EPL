@@ -13,28 +13,34 @@ export default function ReservationCard({
   date,
   time,
   reservationId,
-  ticketId
+  ticketId,
+  onDelete
   
 }) {
-  
-  const handleDelete = async () => {
-    try {
-      const response = await fetch(`/reservations/${reservationId}`, {
-        method: 'DELETE',
-      });
 
-      if (response.ok) {
-        // Handle successful deletion
-        console.log('Reservation deleted successfully');
-         // Trigger any necessary actions after deletion
-      } else {
-        // Handle failed deletion
-        console.error('Failed to delete reservation');
-      }
-    } catch (error) {
-      console.error('Error deleting reservation:', error);
-    }
+  const handleDelete = () => {
+    onDelete(); // Trigger onDelete callback provided by parent component
   };
+  
+  //44444
+  // const handleDelete = async () => {
+  //   try {
+  //     const response = await fetch(`/reservations/${reservationId}`, {
+  //       method: 'DELETE',
+  //     });
+
+  //     if (response.ok) {
+  //       // Handle successful deletion
+  //       console.log('Reservation deleted successfully');
+  //        // Trigger any necessary actions after deletion
+  //     } else {
+  //       // Handle failed deletion
+  //       console.error('Failed to delete reservation');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error deleting reservation:', error);
+  //   }
+  // };
  
   return (
     <Card sx={{ maxWidth: 345, padding: "15px" }}>

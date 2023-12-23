@@ -6,32 +6,101 @@ import ReservationCard from "../components/reservationCard";
 export default function Reservations({ userId }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsWithMatches,setReservationsWithMatches]= useState([]);
-  useEffect( () => {
-    // Fetch matches when the component mounts
-     fetchReservations();
-     fetchReservationMatches(reservations);
-  }, [reservations]);
+  //11111111111
+  // useEffect( () => {
+  //   // Fetch matches when the component mounts
+  //    fetchReservations();
+  //    fetchReservationMatches(reservations);
+  // }, [reservations]);
+
+  useEffect(() => {
+    fetchReservations();
+  }, []);
+
+  const handleDeleteReservation = async (reservationId) => {
+    try {
+      const response = await fetch(`/reservations/${reservationId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // Handle successful deletion
+        console.log('Reservation deleted successfully');
+        // Update reservations immediately after deletion
+        fetchReservations();
+      } else {
+        // Handle failed deletion
+        console.error('Failed to delete reservation');
+      }
+    } catch (error) {
+      console.error('Error deleting reservation:', error);
+    }
+  };
+///22222222222
+  // const fetchReservations = async () => {
+  //   try {
+  //       console.log('kara',userId)
+  //     const response = await fetch(`/user/${userId}/Reservations`);
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch Reservations");
+  //     }
+
+  //     const reservationsData = await response.json();
+  //     console.log(reservationsData);
+  //     setReservations(reservationsData);
+  //     console.log("zefmta", reservations);
+
+  //     // Fetch match details for each reservation and append them to the reservations
+  //   } catch (error) {
+  //     console.error("Error fetching Reservations:", error.message);
+  //   }
+  // };
+
+
+///333333333333
+  // const fetchReservationMatches = async (reservationsData) => {
+  //   try {
+  //     const reservationsWithMatchesArray = [];
+
+  //     for (const reservation of reservationsData) {
+  //       const matchResponse = await fetch(`/matches/${reservation.matchId}`);
+  //       if (!matchResponse.ok) {
+  //         throw new Error('Failed to fetch Match');
+  //       }
+
+  //       const matchData = await matchResponse.json();
+  //       console.log(matchData);
+
+  //       // Append match details to the reservation
+  //       const reservationWithMatch = {
+  //         ...reservation,
+  //         match: matchData[0],
+  //       };
+  //       reservationsWithMatchesArray.push(reservationWithMatch);
+  //     }
+  //     console.log(reservationsWithMatchesArray);
+
+  //     setReservationsWithMatches(reservationsWithMatchesArray);
+  //   } catch (error) {
+  //     console.error('Error fetching match Reservations:', error.message);
+  //   }
+  // };
+
+  // Run this effect whenever reservations state changes
 
   const fetchReservations = async () => {
     try {
-        console.log('kara',userId)
       const response = await fetch(`/user/${userId}/Reservations`);
       if (!response.ok) {
-        throw new Error("Failed to fetch Reservations");
+        throw new Error('Failed to fetch Reservations');
       }
 
       const reservationsData = await response.json();
-      console.log(reservationsData);
-      setReservations(reservationsData);
-      console.log("zefmta", reservations);
-
-      // Fetch match details for each reservation and append them to the reservations
+      fetchReservationMatches(reservationsData);
     } catch (error) {
-      console.error("Error fetching Reservations:", error.message);
+      console.error('Error fetching Reservations:', error.message);
     }
   };
-
-
 
   const fetchReservationMatches = async (reservationsData) => {
     try {
@@ -44,24 +113,18 @@ export default function Reservations({ userId }) {
         }
 
         const matchData = await matchResponse.json();
-        console.log(matchData);
-
-        // Append match details to the reservation
         const reservationWithMatch = {
           ...reservation,
           match: matchData[0],
         };
         reservationsWithMatchesArray.push(reservationWithMatch);
       }
-      console.log(reservationsWithMatchesArray);
 
       setReservationsWithMatches(reservationsWithMatchesArray);
     } catch (error) {
       console.error('Error fetching match Reservations:', error.message);
     }
   };
-
-  // Run this effect whenever reservations state changes
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -78,6 +141,7 @@ export default function Reservations({ userId }) {
               
               reservationId={reservation._id}
               ticketId={reservation.ticketId}
+              onDelete={() => handleDeleteReservation(reservation._id)}
               
             />
           </Grid>

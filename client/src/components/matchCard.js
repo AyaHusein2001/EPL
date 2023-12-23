@@ -18,7 +18,8 @@ export default function MatchCard({
   time,
   matchDetails,
   userId,
-  userRole
+  userRole,
+  fetchMatches
 }) {
     const [open, setOpen] = React.useState(false);
     
@@ -79,7 +80,7 @@ export default function MatchCard({
         open={openEdit}
         handleClose={handleCloseEdit}
         match={matchDetails}
-        
+        fetchMatches={fetchMatches}
         
         />
         </>

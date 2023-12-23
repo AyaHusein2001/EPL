@@ -29,9 +29,9 @@ import Select from "@mui/material/Select";
 var toObject = require("dayjs/plugin/toObject");
 dayjs.extend(toObject);
 
-export default function EditMatchDialog({ open, handleClose, match }) {
+export default function EditMatchDialog({ open, handleClose, match ,fetchMatches }) {
   useEffect(() => {
-    console.log('diaaaalog',matchDatee);
+    
     fetchStadiums();
   }, []);
   const [teams, setTeams] = useState([
@@ -61,7 +61,7 @@ export default function EditMatchDialog({ open, handleClose, match }) {
   // Extract date and time from dateTime
   const matchDatee = {
     years: dateTimeObj.getFullYear(),
-    months: dateTimeObj.getMonth() + 1, // Months are zero-based
+    months: dateTimeObj.getMonth() , // Months are zero-based
     date: dateTimeObj.getDate(),
     hours: dateTimeObj.getHours(),
     minutes: dateTimeObj.getMinutes(),
@@ -85,7 +85,19 @@ export default function EditMatchDialog({ open, handleClose, match }) {
   const [selectedStadium, setSelectedStadium] = useState("");
   const [matchPosted, setMatchPosted] = useState(false);
 
- 
+  useEffect(() => {
+    // Check if formData has stadiumId and initialize selectedStadium
+    if (formData && formData.stadiumId) {
+      // Assuming stadiums is an array of stadiums
+      const selectedStadiumObj = stadiums.find(
+        (stadium) => stadium._id === formData.stadiumId
+      );
+
+      if (selectedStadiumObj) {
+        setSelectedStadium(selectedStadiumObj.name);
+      }
+    }
+  }, []);
 
   const fetchStadiums = async () => {
     try {
@@ -118,7 +130,9 @@ export default function EditMatchDialog({ open, handleClose, match }) {
 
       const data = await response.json();
       console.log("Match updated successfully:", data);
+      fetchMatches();
       handleClose();
+      
       // Set the state to indicate that the match was posted successfully
       
     } catch (error) {
@@ -164,13 +178,13 @@ export default function EditMatchDialog({ open, handleClose, match }) {
       <Dialog maxWidth='md' // Adjust the maxWidth as needed
       fullWidth sx={{justifyContent:'center'}} open={open} onClose={handleClose}>
         <DialogTitle>
-          Edit Match Details : {formData.homeTeam} VS {formData.awayTeam}
+          Edit Match Details 
         </DialogTitle>
         <DialogContent>
         <Box sx={{ display: "flex" }}>
           <Box>
             <FormControl required variant="standard" sx={{ width: "400px" }}>
-              <InputLabel id="home-team">New Home Team</InputLabel>
+              <InputLabel id="home-team"> Home Team</InputLabel>
               <Select
               
                 labelId="home-team"
@@ -201,7 +215,7 @@ export default function EditMatchDialog({ open, handleClose, match }) {
               variant="standard"
               sx={{ width: "400px", marginLeft: "60px" }}
             >
-              <InputLabel id="away-team">New Away Team</InputLabel>
+              <InputLabel id="away-team"> Away Team</InputLabel>
               <Select
                 labelId="away-team"
                 id="away-team-select"
