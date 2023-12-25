@@ -70,7 +70,7 @@ const ResponsiveAppBar = ({ onPageChange, onLogout, isLoggedIn, userRole }) => {
             Waiting Users
           </Button>):(<></>)}
 
-          {isLoggedIn && (userRole === "Manager" || userRole === "Fan") && (
+          {isLoggedIn && ( userRole === "Fan") && (
             <>
               {/* Additional buttons for reservations and edit profile */}
               <Button

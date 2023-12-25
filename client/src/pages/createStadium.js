@@ -17,21 +17,19 @@ import Select from "@mui/material/Select";
 
 var toObject = require("dayjs/plugin/toObject");
 dayjs.extend(toObject);
+
 const CenteredContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  //   height: 100vh; /* Make the container take the full height of the viewport */
 `;
 
-// Define a styled component
 const StyledForm = styled.form`
-  padding: 20px; /* Add some padding for better visual appeal */
+  padding: 20px;
   display: flex;
   align-items: center;
-
   flex-direction: column;
-  width: 70rem; /* Set a width to control the form's size */
+  width: 70rem;
 `;
 
 export default function CreateStadium() {
@@ -43,13 +41,48 @@ export default function CreateStadium() {
     rows: 0,
     rowSeats: 0,
   });
-  const handleFieldChange = async (field, value) => {
+
+  const [formErrors, setFormErrors] = useState({
+    name: "",
+    city: "",
+    rows: "",
+    rowSeats: "",
+  });
+
+  const handleFieldChange = (field, value) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
+
+    // Clear validation error when user starts typing
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: "",
+    }));
   };
+
+  const validateForm = () => {
+    let isValid = true;
+    const errors = {};
+
+    Object.keys(formData).forEach((field) => {
+      if (!formData[field]) {
+        errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+        isValid = false;
+      }
+    });
+
+    setFormErrors(errors);
+    return isValid;
+  };
+
   const handleSubmit = async () => {
+    if (!validateForm()) {
+      // If validation fails, don't proceed with form submission
+      return;
+    }
+
     try {
       // Your form submission logic goes here
       const response = await fetch("/stadium", {
@@ -67,28 +100,25 @@ export default function CreateStadium() {
       const data = await response.json();
       console.log("stadium created successfully:", data);
 
-      // Set the state to indicate that the match was posted successfully
       setStadiumPosted(true);
     } catch (error) {
-      console.error("Error creating match:", error);
+      console.error("Error creating stadium:", error);
       setStadiumPosted(false);
-
-      // Handle error here
     }
   };
+
   return (
     <>
       <div
         style={{
           display: "flex",
           justifyContent: "center",
-          // alignItems: "center",
-          // height: "100vh",
+          height: "100vh",
         }}
       >
         {stadiumPosted ? (
           <h1 style={{ textAlign: "center", color: "#1976D2" }}>
-            Stadium Created Successfully !
+            Stadium Created Successfully!
           </h1>
         ) : (
           <CenteredContainer>
@@ -107,6 +137,7 @@ export default function CreateStadium() {
                 <Box>
                   <FormControl
                     required
+                    error={!!formErrors.name}
                     sx={{ width: "500px" }}
                     variant="standard"
                   >
@@ -117,13 +148,16 @@ export default function CreateStadium() {
                       onChange={(e) =>
                         handleFieldChange("name", e.target.value)
                       }
-                      // onFocus={(e) => handleFieldFocus("mainReferee")}
                     />
+                    {formErrors.name && (
+                      <p style={{ color: "red" }}>{formErrors.name}</p>
+                    )}
                   </FormControl>
                 </Box>
                 <Box>
                   <FormControl
                     required
+                    error={!!formErrors.city}
                     sx={{ width: "500px", marginLeft: "60px" }}
                     variant="standard"
                   >
@@ -134,8 +168,10 @@ export default function CreateStadium() {
                       onChange={(e) =>
                         handleFieldChange("city", e.target.value)
                       }
-                      // onFocus={(e) => handleFieldFocus("mainReferee")}
                     />
+                    {formErrors.city && (
+                      <p style={{ color: "red" }}>{formErrors.city}</p>
+                    )}
                   </FormControl>
                 </Box>
               </Box>
@@ -150,6 +186,7 @@ export default function CreateStadium() {
                 <Box>
                   <FormControl
                     required
+                    error={!!formErrors.rows}
                     sx={{ width: "500px" }}
                     variant="standard"
                   >
@@ -162,25 +199,30 @@ export default function CreateStadium() {
                       onChange={(e) =>
                         handleFieldChange("rows", e.target.value)
                       }
-                      // onFocus={(e) => handleFieldFocus("mainReferee")}
                     />
+                    {formErrors.rows && (
+                      <p style={{ color: "red" }}>{formErrors.rows}</p>
+                    )}
                   </FormControl>
                 </Box>
                 <Box>
                   <FormControl
                     required
+                    error={!!formErrors.rowSeats}
                     sx={{ width: "500px", marginLeft: "60px" }}
                     variant="standard"
                   >
-                    <InputLabel htmlFor="line-man-two">rowseats</InputLabel>
+                    <InputLabel htmlFor="rowSeats">Row Seats</InputLabel>
                     <Input
-                      id="line-man-two"
+                      id="rowSeats"
                       value={formData.rowSeats}
                       onChange={(e) =>
                         handleFieldChange("rowSeats", e.target.value)
                       }
-                      // onFocus={(e) => handleFieldFocus("mainReferee")}
                     />
+                    {formErrors.rowSeats && (
+                      <p style={{ color: "red" }}>{formErrors.rowSeats}</p>
+                    )}
                   </FormControl>
                 </Box>
               </Box>

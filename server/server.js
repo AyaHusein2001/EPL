@@ -108,12 +108,14 @@ app.get("/matches", async function (req, res) {
   res.json(matches);
 });
 
-
 app.post("/user", async (req, res) => {
   const formData = req.body;
   console.log(formData);
 
   try {
+    // Convert the _id to ObjectId
+    formData._id = new ObjectId(formData._id);
+
     // Insert the formData into the 'users' collection
     const result = await db.getDb().collection("users").insertOne(formData);
 
@@ -132,7 +134,6 @@ app.post("/user", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 
 app.post("/stadium", async (req, res) => {
   const formData = req.body;

@@ -384,7 +384,7 @@ export default function EditProfile({ userId }) {
               </Box>
             </Box>
 
-            <Box sx={{ display: "flex", marginTop: "17px" }}>
+            {/* <Box sx={{ display: "flex", marginTop: "17px" }}> */}
               {/* <Box>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <p style={{ color: "#747474" }}>Birth date *</p>
@@ -398,7 +398,7 @@ export default function EditProfile({ userId }) {
                   />
                 </LocalizationProvider>
               </Box> */}
-              <Box>
+              {/* <Box>
                 <FormControl
                   required
                   variant="standard"
@@ -426,7 +426,7 @@ export default function EditProfile({ userId }) {
                   {formRequired["gender"] ? "This field is required" : ""}
                 </p>
               </Box>
-            </Box>
+            </Box> */}
 
             <Box sx={{ display: "flex", marginTop: "17px" }}>
               <Box>

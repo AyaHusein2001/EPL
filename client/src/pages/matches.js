@@ -28,7 +28,9 @@ export default function Matches({userId,userRole}) {
   return (
     <Box sx={{ width: '100%' }}>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {matches.map((match) => (
+        {!matches ? (<h1 style={{ textAlign: "center", color: "#1976D2" }}>
+            No matches yet , please create some !
+          </h1>):(matches.map((match) => (
           <Grid item key={match._id} xs={3}>
             <MatchCard
               country1Name={match.homeTeam}
@@ -43,7 +45,7 @@ export default function Matches({userId,userRole}) {
               fetchMatches={fetchMatches}
             />
           </Grid>
-        ))}
+        )))}
       </Grid>
     </Box>
   );

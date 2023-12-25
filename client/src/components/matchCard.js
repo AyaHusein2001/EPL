@@ -71,6 +71,7 @@ export default function MatchCard({
         handleClose={handleClose}
         match={matchDetails}
         userId={userId}
+        userRole={userRole}
         
         />
         {userRole==='Manager'?(

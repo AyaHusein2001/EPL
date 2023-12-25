@@ -39,9 +39,11 @@ const UsersList = () => {
 
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      {users.map((user, index) => (
+      {!users?(<h1 style={{ textAlign: "center", color: "#1976D2" }}>
+            No users yet !
+          </h1>):(users.map((user, index) => (
         <React.Fragment key={index}>
-          <ListItem alignItems="flex-start" sx={{ width: '100%' }}>
+          <ListItem  alignItems="flex-start" sx={{ width: '100%' }}>
             <ListItemAvatar>
               <Avatar alt={user.firstName}  />
             </ListItemAvatar>
@@ -64,7 +66,7 @@ const UsersList = () => {
             
             <Button
               onClick={() => handleRemove(user._id)}
-              variant="contained"
+              // variant="contained"
               color='error'
             >
               Remove
@@ -72,7 +74,7 @@ const UsersList = () => {
           </ListItem>
           {index < users.length - 1 && <Divider variant="inset" component="li" />}
         </React.Fragment>
-      ))}
+      )))}
     </List>
   );
 };

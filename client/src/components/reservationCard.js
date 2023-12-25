@@ -4,6 +4,7 @@ import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import { Box } from "@mui/material";
+import { MdOutlineEventSeat } from "react-icons/md";
 
 export default function ReservationCard({
   country1Name,
@@ -14,14 +15,14 @@ export default function ReservationCard({
   time,
   reservationId,
   ticketId,
-  onDelete
-  
+  onDelete,
+  row,
+  seat,
 }) {
-
   const handleDelete = () => {
     onDelete(); // Trigger onDelete callback provided by parent component
   };
-  
+
   //44444
   // const handleDelete = async () => {
   //   try {
@@ -41,7 +42,7 @@ export default function ReservationCard({
   //     console.error('Error deleting reservation:', error);
   //   }
   // };
- 
+
   return (
     <Card sx={{ maxWidth: 345, padding: "15px" }}>
       <Box
@@ -58,7 +59,7 @@ export default function ReservationCard({
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Avatar
           sx={{
-            width: "80px",
+            width: "100px",
             height: "150px",
             objectFit: "scale-down",
             borderRadius: "0px",
@@ -68,7 +69,7 @@ export default function ReservationCard({
         />
         <Avatar
           sx={{
-            width: "80px",
+            width: "100px",
             height: "150px",
             objectFit: "cover",
             borderRadius: "0px",
@@ -83,16 +84,22 @@ export default function ReservationCard({
         <h2 style={{ color: "cornflowerblue" }}>{country2Name}</h2>
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection:'column' }}>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
         <h3 style={{ color: "cornflowerblue" }}>{date}</h3>
-       
+
         <h3 style={{ color: "cornflowerblue" }}>{time}</h3>
       </Box>
+
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <h2 style={{ color: "cornflowerblue" }}>
+          {" "}
+          <MdOutlineEventSeat color="cornflowerblue" size={40} /> [{row} {seat}]
+        </h2>
+      </Box>
       <CardActions sx={{ justifyContent: "space-around" }}>
-        <Button onClick={handleDelete} size="small" >
+        <Button color='error' onClick={handleDelete} size="small">
           Cancel Reservation
         </Button>
-        
       </CardActions>
     </Card>
   );

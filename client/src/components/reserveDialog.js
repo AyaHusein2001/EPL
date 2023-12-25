@@ -13,18 +13,26 @@ import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 
-export default function ReserveDialog({ open, handleClose, match, userId }) {
+export default function ReserveDialog({ open, handleClose, match, userId,userRole }) {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const [stadium, setStadium] = React.useState(null);
   const [selectedSeat, setSelectedSeat] = React.useState(null);
   const [creditCard, setCreditCard] = React.useState("");
   const [pinNumber, setPinNumber] = React.useState("");
   const [error, setError] = React.useState(null);
+  const [sameTime, setSameTime] = React.useState(false);
   const [successMessage, setSuccessMessage] = React.useState(null);
   const [reservations, setReservations] = React.useState([]);
+
+  const [reservationsWithMatches, setReservationsWithMatches] = React.useState(
+    []
+  );
+
   React.useEffect(() => {
     fetchStadium();
-    fetchReservations(); // Fetch reservations when the component first mounts
+    fetchReservations();
+    fetchUserReservations();
+    // Fetch reservations when the component first mounts
   }, []);
   // Function to fetch stadium details
   const fetchStadium = async () => {
@@ -48,7 +56,42 @@ export default function ReserveDialog({ open, handleClose, match, userId }) {
       console.error("Error fetching match reservations:", error);
     }
   };
+  const fetchUserReservations = async () => {
+    try {
+      const response = await fetch(`/user/${userId}/Reservations`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch Reservations");
+      }
 
+      const reservationsData = await response.json();
+      fetchReservationMatches(reservationsData);
+    } catch (error) {
+      console.error("Error fetching Reservations:", error.message);
+    }
+  };
+  const fetchReservationMatches = async (reservationsData) => {
+    try {
+      const reservationsWithMatchesArray = [];
+
+      for (const reservation of reservationsData) {
+        const matchResponse = await fetch(`/matches/${reservation.matchId}`);
+        if (!matchResponse.ok) {
+          throw new Error("Failed to fetch Match");
+        }
+
+        const matchData = await matchResponse.json();
+        const reservationWithMatch = {
+          ...reservation,
+          match: matchData[0],
+        };
+        reservationsWithMatchesArray.push(reservationWithMatch);
+      }
+
+      setReservationsWithMatches(reservationsWithMatchesArray);
+    } catch (error) {
+      console.error("Error fetching match Reservations:", error.message);
+    }
+  };
   // Only fetch reservations when match._id changes
 
   const isSeatReserved = (row, seat) => {
@@ -70,9 +113,27 @@ export default function ReserveDialog({ open, handleClose, match, userId }) {
     setError(false);
   };
 
+  const handleSameTime = () => {
+    const isSameTime = reservationsWithMatches.some((reservation) => {
+      console.log("first match time", reservation.match.dateTime);
+      console.log("second match time", match.dateTime);
+
+      return (
+        reservation.match.dateTime == match.dateTime &&
+        reservation.match._id !== match._id
+      );
+    });
+    console.log("ghareebbbb", isSameTime);
+
+    return isSameTime;
+  };
+
   const handleReserve = async () => {
-    if (selectedSeat && creditCard && pinNumber) {
+    const isSameTime = handleSameTime();
+    if (!isSameTime && selectedSeat && creditCard && pinNumber) {
       try {
+        console.log("ghareebbbb geadn", sameTime);
+
         const response = await fetch(`/matches/${match._id}/reservations`, {
           method: "POST",
           headers: {
@@ -100,7 +161,12 @@ export default function ReserveDialog({ open, handleClose, match, userId }) {
           // Handle failed reservation
           console.error("Failed to reserve seat");
           // Clear success message if any
-          setSuccessMessage(null);
+          if (isSameTime) {
+            setSameTime(true);
+            setSuccessMessage(null);
+          } else {
+            setSuccessMessage(null);
+          }
         }
       } catch (error) {
         console.error("Error making reservation request:", error);
@@ -108,10 +174,17 @@ export default function ReserveDialog({ open, handleClose, match, userId }) {
         setSuccessMessage(null);
       }
     } else {
+
+      if (isSameTime) {
+        setSameTime(true);
+        setError("");
+        setSuccessMessage(null);
+      } else{
       // Display an error or prevent reservation
       setError("Please fill in all required fields.");
       // Clear success message if any
       setSuccessMessage(null);
+      }
     }
   };
 
@@ -185,7 +258,7 @@ export default function ReserveDialog({ open, handleClose, match, userId }) {
 
             {isLoggedIn && renderEventSeats()}
           </DialogContentText>
-          {isLoggedIn && (
+          {isLoggedIn &&(userRole === "Fan") && (
             <>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <FormControl
@@ -226,6 +299,13 @@ export default function ReserveDialog({ open, handleClose, match, userId }) {
                 </Typography>
               )}
 
+              {sameTime && (
+                <Typography variant="caption" color="error">
+                  You have another match at this time , cancel this reservation
+                  first if you won't attend !
+                </Typography>
+              )}
+
               {successMessage && (
                 <Typography style={{ color: "green" }}>
                   {successMessage}
@@ -235,7 +315,7 @@ export default function ReserveDialog({ open, handleClose, match, userId }) {
           )}
         </DialogContent>
 
-        {isLoggedIn && (
+        {isLoggedIn && (userRole === "Fan") &&(
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
             <Button onClick={handleReserve}>Reserve</Button>

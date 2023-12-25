@@ -71,6 +71,14 @@ export default function CreateMatch() {
   const [matchTime, setMatchTime] = React.useState(dayjs("2022-04-17T15:30"));
   const [selectedStadium, setSelectedStadium] = useState("");
   const [matchPosted, setMatchPosted] = useState(false);
+  const [formErrors, setFormErrors] = useState({
+    homeTeam: "",
+    awayTeam: "",
+    stadiumId: "",
+    mainReferee: "",
+    lineMan1: "",
+    lineMan2: "",
+  });
 
   useEffect(() => {
     const fetchStadiums = async () => {
@@ -90,7 +98,29 @@ export default function CreateMatch() {
     fetchStadiums();
   }, []);
 
+  const validateForm = () => {
+    let isValid = true;
+    const errors = {};
+
+    Object.keys(formData).forEach((field) => {
+      if (!formData[field]) {
+        errors[field] = `${
+          field.charAt(0).toUpperCase() + field.slice(1)
+        } is required`;
+        isValid = false;
+      }
+    });
+
+    setFormErrors(errors);
+    return isValid;
+  };
+
   const handleSubmit = async () => {
+    if (!validateForm()) {
+      // If validation fails, don't proceed with form submission
+      return;
+    }
+
     try {
       // Your form submission logic goes here
       const response = await fetch("/match", {
@@ -118,10 +148,16 @@ export default function CreateMatch() {
     }
   };
 
-  const handleFieldChange = async (field, value) => {
+  const handleFieldChange = (field, value) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
+    }));
+
+    // Clear validation error when user starts typing
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: "",
     }));
   };
 
@@ -171,9 +207,9 @@ export default function CreateMatch() {
               <Box sx={{ display: "flex" }}>
                 <Box>
                   <FormControl
-                    required
                     variant="standard"
                     sx={{ width: "500px" }}
+                    error={!!formErrors.homeTeam}
                   >
                     <InputLabel id="home-team">Home Team</InputLabel>
                     <Select
@@ -183,14 +219,12 @@ export default function CreateMatch() {
                       onChange={(e) =>
                         handleFieldChange("homeTeam", e.target.value)
                       }
-                      // onFocus={(e) => handleFieldFocus("role")}
                       label="Home Team"
                       MenuProps={{
                         style: {
-                          maxHeight: "250px", // Set the maximum height for the dropdown menu
+                          maxHeight: "250px",
                         },
                       }}
-                      // defaultValue={teams[0]}
                     >
                       {teams.map((team, index) => (
                         <MenuItem key={index} value={team}>
@@ -198,6 +232,9 @@ export default function CreateMatch() {
                         </MenuItem>
                       ))}
                     </Select>
+                    {formErrors.homeTeam && (
+                      <p style={{ color: "red" }}>{formErrors.homeTeam}</p>
+                    )}
                   </FormControl>
                 </Box>
 
@@ -206,6 +243,7 @@ export default function CreateMatch() {
                     required
                     variant="standard"
                     sx={{ width: "500px", marginLeft: "60px" }}
+                    error={!!formErrors.awayTeam}
                   >
                     <InputLabel id="away-team">Away Team</InputLabel>
                     <Select
@@ -215,14 +253,12 @@ export default function CreateMatch() {
                       onChange={(e) =>
                         handleFieldChange("awayTeam", e.target.value)
                       }
-                      // onFocus={(e) => handleFieldFocus("role")}
-                      label="away Team"
+                      label="Away Team"
                       MenuProps={{
                         style: {
-                          maxHeight: "250px", // Set the maximum height for the dropdown menu
+                          maxHeight: "250px",
                         },
                       }}
-                      // defaultValue={teams[1]}
                     >
                       {teams.map((team, index) => (
                         <MenuItem key={index} value={team}>
@@ -230,16 +266,19 @@ export default function CreateMatch() {
                         </MenuItem>
                       ))}
                     </Select>
+                    {formErrors.awayTeam && (
+                      <p style={{ color: "red" }}>{formErrors.awayTeam}</p>
+                    )}
                   </FormControl>
                 </Box>
               </Box>
-
               <Box sx={{ display: "flex", marginTop: "17px" }}>
                 <Box>
                   <FormControl
                     required
                     variant="standard"
                     sx={{ width: "500px" }}
+                    error={!!formErrors.stadiumId}
                   >
                     <InputLabel id="stadium">Stadium</InputLabel>
                     <Select
@@ -247,12 +286,10 @@ export default function CreateMatch() {
                       id="stadium-select"
                       value={selectedStadium}
                       onChange={handleStadiumChange}
-                      // defaultValue={stadiums[0].name}
-                      // onFocus={(e) => handleFieldFocus("role")}
                       label="Stadium"
                       MenuProps={{
                         style: {
-                          maxHeight: "250px", // Set the maximum height for the dropdown menu
+                          maxHeight: "250px",
                         },
                       }}
                     >
@@ -262,6 +299,9 @@ export default function CreateMatch() {
                         </MenuItem>
                       ))}
                     </Select>
+                    {formErrors.stadiumId && (
+                      <p style={{ color: "red" }}>{formErrors.stadiumId}</p>
+                    )}
                   </FormControl>
                 </Box>
                 <Box>
@@ -269,6 +309,7 @@ export default function CreateMatch() {
                     required
                     sx={{ width: "500px", marginLeft: "60px" }}
                     variant="standard"
+                    error={!!formErrors.mainReferee}
                   >
                     <InputLabel htmlFor="main-referee">Main Referee</InputLabel>
                     <Input
@@ -277,12 +318,13 @@ export default function CreateMatch() {
                       onChange={(e) =>
                         handleFieldChange("mainReferee", e.target.value)
                       }
-                      // onFocus={(e) => handleFieldFocus("mainReferee")}
                     />
+                    {formErrors.mainReferee && (
+                      <p style={{ color: "red" }}>{formErrors.mainReferee}</p>
+                    )}
                   </FormControl>
                 </Box>
               </Box>
-
               <Box
                 sx={{
                   display: "flex",
@@ -298,22 +340,31 @@ export default function CreateMatch() {
                       defaultValue={dayjs("2022-04-17")}
                       value={matchDate}
                       onChange={(newValue) => handleMatchDate(newValue)}
+                      error={!!formErrors.matchDatee}
                     />
                   </LocalizationProvider>
+                  {formErrors.matchDatee && (
+                    <p style={{ color: "red" }}>{formErrors.matchDatee}</p>
+                  )}
                 </Box>
 
                 <Box>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <LocalizationProvider  dateAdapter={AdapterDayjs}>
                     <TimePicker
                       sx={{ width: "500px" }}
                       label="Time picker"
                       value={matchTime}
+                      
                       onChange={(newValue) => handleMatchTime(newValue)}
+                      error={!!formErrors.matchTimee}
+                      
                     />
                   </LocalizationProvider>
+                  {formErrors.matchTimee && (
+                    <p style={{ color: "red" }}>{formErrors.matchTimee}</p>
+                  )}
                 </Box>
-              </Box>
-
+              </Box>{" "}
               <Box
                 sx={{
                   display: "flex",
@@ -334,9 +385,13 @@ export default function CreateMatch() {
                       onChange={(e) =>
                         handleFieldChange("lineMan1", e.target.value)
                       }
+                      error={!!formErrors.lineMan1}
                       // onFocus={(e) => handleFieldFocus("mainReferee")}
                     />
                   </FormControl>
+                  {formErrors.lineMan1 && (
+                    <p style={{ color: "red" }}>{formErrors.lineMan1}</p>
+                  )}
                 </Box>
                 <Box>
                   <FormControl
@@ -351,12 +406,15 @@ export default function CreateMatch() {
                       onChange={(e) =>
                         handleFieldChange("lineMan2", e.target.value)
                       }
+                      error={!!formErrors.lineMan2}
                       // onFocus={(e) => handleFieldFocus("mainReferee")}
                     />
                   </FormControl>
+                  {formErrors.lineMan2 && (
+                    <p style={{ color: "red" }}>{formErrors.lineMan1}</p>
+                  )}
                 </Box>
               </Box>
-
               <Button
                 variant="contained"
                 sx={{ marginTop: "40px", width: "100px" }}
